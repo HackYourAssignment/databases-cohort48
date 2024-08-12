@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="kGbUghpJTVZi7qmInGEX" name="Page-1">
-        <mxGraphModel dx="1115" dy="642" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="817" dy="570" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -185,7 +185,7 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="57" value="Recipe_step" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fontStyle=1;align=center;" vertex="1" parent="1">
-                    <mxGeometry x="360" y="210" width="200" height="170" as="geometry"/>
+                    <mxGeometry x="360" y="200" width="200" height="170" as="geometry"/>
                 </mxCell>
                 <mxCell id="58" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="57">
                     <mxGeometry y="30" width="200" height="40" as="geometry"/>

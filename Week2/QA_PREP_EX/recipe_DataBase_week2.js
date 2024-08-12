@@ -1,4 +1,4 @@
-const {createDatabaseAndTables,connection} = require("../Week1/recipe_DataBase.js");
+const {createDatabaseAndTables,connection} = require("../../Week1/recipe_DataBase.js");
 
 if (!connection._connectCalled) {
   connection.connect((err) => {
@@ -12,64 +12,35 @@ if (!connection._connectCalled) {
 
 function runQueries() {
   createDatabaseAndTables(() => {
-
     const ADD_TYPE_COLUMN_QUERY = `
       ALTER TABLE Recipe
-      ADD COLUMN type ENUM 
-      (
-        'vegetarian', 
-        'vegan', 
-        'non-vegetarian'
-      ) NOT NULL AFTER recipe_name;`;
+      ADD COLUMN type ENUM ('vegetarian','vegan','non-vegetarian') NOT NULL AFTER recipe_name;`;
 
     connection.query(ADD_TYPE_COLUMN_QUERY, function (error, results, fields) {
       if (error) throw error;
       console.log("Type column added to Recipe table.");
 
-
-
       // add categories to the table => Category
       const ADD_CATEGORIES_QUERY = `
         INSERT INTO Category (category_name) VALUES 
-        ('Cake'), 
-        ('No-Bake'), 
-        ('Vegetarian'), 
-        ('Vegan'), 
-        ('Gluten-Free'), 
-        ('Japanese');`;
+        ('Cake'),('No-Bake'),('Vegetarian'),('Vegan'),('Gluten-Free'),('Japanese');`;
 
       connection.query(ADD_CATEGORIES_QUERY, function (error, results, fields) {
         if (error) throw error;
         console.log("Categories added to Category table.");
 
-
-
         //add materials to the table => Ingredient
         const ADD_INGREDIENTS_QUERY = `
           INSERT INTO Ingredient (ingredient_name) VALUES 
-          ('Condensed milk'), 
-          ('Cream Cheese'), 
-          ('Lemon Juice'), 
-          ('Pie Crust'), 
-          ('Cherry Jam'), 
-          ('Brussels Sprouts'), 
-          ('Butter'), 
-          ('Flour'), 
-          ('Salt'), 
-          ('Pepper'), 
-          ('Milk'), 
-          ('Shredded Cheddar cheese'), 
-          ('Macaroni'), 
-          ('Eggs'), 
-          ('Soy sauce'), 
-          ('Sugar'), 
-          ('Olive Oil');`;
+          ('Condensed milk'),('Cream Cheese'),('Lemon Juice'), 
+          ('Pie Crust'),('Cherry Jam'),('Brussels Sprouts'), 
+          ('Butter'),('Flour'),('Salt'),('Pepper'),('Milk'), 
+          ('Shredded Cheddar cheese'),('Macaroni'),('Eggs'), 
+          ('Soy sauce'),('Sugar'),('Olive Oil');`;
 
         connection.query(ADD_INGREDIENTS_QUERY, function (error, results, fields) {
           if (error) throw error;
           console.log("Ingredients added to Ingredient table.");
-
-
 
           // sort of the materials and categories and add commands to the table => recipe
           const ADD_RECIPES_QUERY = `
