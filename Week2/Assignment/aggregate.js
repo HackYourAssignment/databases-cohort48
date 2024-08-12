@@ -21,7 +21,7 @@ connection.query('USE assignmentDatabase', (err) => {
 const query1 = `
 SELECT rp.paper_title, COUNT(arp.author_id) AS num_authors
     FROM research_papers rp
-    LEFT JOIN authors_research_papers arp ON rp.paper_id = arp.paper_id
+    RIGHT JOIN authors_research_papers arp ON rp.paper_id = arp.paper_id
     GROUP BY rp.paper_id;
     `;
 
