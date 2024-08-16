@@ -7,6 +7,10 @@ const data = require("./data.json");
  * @param {MongoClient} client - The client that is connected to your database
  */
 const seedDatabase = async (client) => {
+
+  const db = client.db("databaseWeek3");
+
+ 
   const hasCollection = await client
     .db("databaseWeek3")
     .listCollections({ name: "bob_ross_episodes" })
@@ -42,6 +46,7 @@ const seedDatabase = async (client) => {
     // Add our documents
     await bobRossCollection.insertMany(documents);
   } else {
+    await db.createCollection("bob_ross_episodes");
     throw Error("The collection `bob_ross_episodes` does not exist!");
   }
 };
