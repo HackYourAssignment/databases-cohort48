@@ -1,20 +1,20 @@
-const mysql = require('mysql2');
+const mysql = require("mysql2");
 
 // Create a connection to the MySQL server
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'hyfuser',
-  password: 'hyfpassword',
-  database: 'myLibrary'  // Use the existing database
+  host: "localhost",
+  user: "hyfuser",
+  password: "hyfpassword",
+  database: "myLibrary", // Use the existing database
 });
 
 // Connect to the MySQL server
-connection.connect(err => {
+connection.connect((err) => {
   if (err) {
-    console.error('Error connecting to the MySQL server:', err);
+    console.error("Error connecting to the MySQL server:", err);
     return;
   }
-  console.log('Connected to the MySQL server.');
+  console.log("Connected to the MySQL server.");
 
   // Insert sample data into authors table including the mentor column
   const insertAuthors = `
@@ -38,10 +38,10 @@ connection.connect(err => {
 
   connection.query(insertAuthors, (err) => {
     if (err) {
-      console.error('Error inserting authors data:', err);
+      console.error("Error inserting authors data:", err);
       return;
     }
-    console.log('Sample data inserted into authors table.');
+    console.log("Sample data inserted into authors table.");
 
     // Create the research_Papers table
     const createResearchPapersTable = `
@@ -57,10 +57,10 @@ connection.connect(err => {
 
     connection.query(createResearchPapersTable, (err) => {
       if (err) {
-        console.error('Error creating research_Papers table:', err);
+        console.error("Error creating research_Papers table:", err);
         return;
       }
-      console.log('Research Papers table created.');
+      console.log("Research Papers table created.");
 
       // Insert sample data into research_Papers table
       const insertResearchPapers = `
@@ -84,13 +84,62 @@ connection.connect(err => {
 
       connection.query(insertResearchPapers, (err) => {
         if (err) {
-          console.error('Error inserting research papers data:', err);
+          console.error("Error inserting research papers data:", err);
         } else {
-          console.log('Sample data inserted into research_Papers table.');
+          console.log("Sample data inserted into research_Papers table.");
         }
 
-        // Close the connection
-        connection.end();
+        //research papers can have multiple authors, which suggests a many-to-many relationship.
+        //to maintain this reality in the database, we need to create a junction table that connects authors and research papers.
+        // Create the author_paper junction table
+        const createAuthorPaperTable = `
+CREATE TABLE IF NOT EXISTS author_paper (
+  author_id INT,
+  paper_id INT,
+  PRIMARY KEY (author_id, paper_id),
+  FOREIGN KEY (author_id) REFERENCES authors(author_id),
+  FOREIGN KEY (paper_id) REFERENCES research_Papers(paper_id)
+);
+`;
+
+        connection.query(createAuthorPaperTable, (err) => {
+          if (err) {
+            console.error("Error creating author_paper table:", err);
+            return;
+          }
+          console.log("Author-Paper junction table created.");
+
+          // Insert sample data into author_paper table
+          const insertAuthorPaper = `
+  INSERT INTO author_paper (author_id, paper_id) VALUES
+  (1, 1), (2, 1),
+  (2, 2), (3, 2),
+  (3, 3), (4, 3),
+  (4, 4), (5, 4),
+  (5, 5), (6, 5),
+  (6, 6), (7, 6),
+  (7, 7), (8, 7),
+  (8, 8), (9, 8),
+  (9, 9), (10, 9),
+  (10, 10), (11, 10),
+  (11, 11), (12, 11),
+  (12, 12), (13, 12),
+  (13, 13), (14, 13),
+  (14, 14), (15, 14),
+  (15, 15), (1, 15);  // Adding multiple authors to some papers
+`;
+
+          connection.query(insertAuthorPaper, (err) => {
+            if (err) {
+              console.error("Error inserting author-paper data:", err);
+            } else {
+              console.log("Sample data inserted into author_paper table.");
+            }
+
+            // Close the connection
+            connection.end();
+          });
+        });
       });
     });
   });
