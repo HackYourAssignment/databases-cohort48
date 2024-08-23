@@ -1,5 +1,5 @@
 const mysql = require('mysql2');
-const createDatabaseAndTables = require('./createTablesAndData'); // Import the SQL queries
+const createDatabaseAndTables = require('./createTableAndData'); // Import the SQL queries
 // Create a connection to the MySQL database
 const connection = mysql.createConnection({
     host: 'localhost',
