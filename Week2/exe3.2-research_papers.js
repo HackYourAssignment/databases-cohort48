@@ -43,15 +43,13 @@ connection.connect((err) => {
     }
     console.log("Sample data inserted into authors table.");
 
-    // Create the research_Papers table
+    // Create the research_Papers table without the author_id foreign key
     const createResearchPapersTable = `
       CREATE TABLE IF NOT EXISTS research_Papers (
           paper_id INT AUTO_INCREMENT PRIMARY KEY,
           paper_title VARCHAR(255) NOT NULL,
           conference VARCHAR(255),
-          publish_date DATE,
-          author_id INT,
-          FOREIGN KEY (author_id) REFERENCES authors(author_id)
+          publish_date DATE
       );
     `;
 
@@ -64,22 +62,22 @@ connection.connect((err) => {
 
       // Insert sample data into research_Papers table
       const insertResearchPapers = `
-        INSERT INTO research_Papers (paper_title, conference, publish_date, author_id) VALUES
-        ('Paper A', 'Conference 1', '2023-01-15', 1),
-        ('Paper B', 'Conference 2', '2022-11-20', 2),
-        ('Paper C', 'Conference 1', '2023-03-10', 3),
-        ('Paper D', 'Conference 3', '2022-09-25', 4),
-        ('Paper E', 'Conference 2', '2023-05-30', 5),
-        ('Paper F', 'Conference 1', '2022-10-05', 6),
-        ('Paper G', 'Conference 3', '2023-02-22', 7),
-        ('Paper H', 'Conference 2', '2022-12-14', 8),
-        ('Paper I', 'Conference 1', '2023-04-08', 9),
-        ('Paper J', 'Conference 3', '2022-08-19', 10),
-        ('Paper K', 'Conference 2', '2023-01-11', 11),
-        ('Paper L', 'Conference 1', '2022-11-04', 12),
-        ('Paper M', 'Conference 3', '2023-06-17', 13),
-        ('Paper N', 'Conference 2', '2022-10-23', 14),
-        ('Paper O', 'Conference 1', '2023-05-06', 15);
+        INSERT INTO research_Papers (paper_title, conference, publish_date) VALUES
+        ('Paper A', 'Conference 1', '2023-01-15'),
+        ('Paper B', 'Conference 2', '2022-11-20'),
+        ('Paper C', 'Conference 1', '2023-03-10'),
+        ('Paper D', 'Conference 3', '2022-09-25'),
+        ('Paper E', 'Conference 2', '2023-05-30'),
+        ('Paper F', 'Conference 1', '2022-10-05'),
+        ('Paper G', 'Conference 3', '2023-02-22'),
+        ('Paper H', 'Conference 2', '2022-12-14'),
+        ('Paper I', 'Conference 1', '2023-04-08'),
+        ('Paper J', 'Conference 3', '2022-08-19'),
+        ('Paper K', 'Conference 2', '2023-01-11'),
+        ('Paper L', 'Conference 1', '2022-11-04'),
+        ('Paper M', 'Conference 3', '2023-06-17'),
+        ('Paper N', 'Conference 2', '2022-10-23'),
+        ('Paper O', 'Conference 1', '2023-05-06');
       `;
 
       connection.query(insertResearchPapers, (err) => {
@@ -89,18 +87,16 @@ connection.connect((err) => {
           console.log("Sample data inserted into research_Papers table.");
         }
 
-        //research papers can have multiple authors, which suggests a many-to-many relationship.
-        //to maintain this reality in the database, we need to create a junction table that connects authors and research papers.
         // Create the author_paper junction table
         const createAuthorPaperTable = `
-CREATE TABLE IF NOT EXISTS author_paper (
-  author_id INT,
-  paper_id INT,
-  PRIMARY KEY (author_id, paper_id),
-  FOREIGN KEY (author_id) REFERENCES authors(author_id),
-  FOREIGN KEY (paper_id) REFERENCES research_Papers(paper_id)
-);
-`;
+          CREATE TABLE IF NOT EXISTS author_paper (
+            author_id INT,
+            paper_id INT,
+            PRIMARY KEY (author_id, paper_id),
+            FOREIGN KEY (author_id) REFERENCES authors(author_id),
+            FOREIGN KEY (paper_id) REFERENCES research_Papers(paper_id)
+          );
+        `;
 
         connection.query(createAuthorPaperTable, (err) => {
           if (err) {
@@ -111,23 +107,23 @@ CREATE TABLE IF NOT EXISTS author_paper (
 
           // Insert sample data into author_paper table
           const insertAuthorPaper = `
-  INSERT INTO author_paper (author_id, paper_id) VALUES
-  (1, 1), (2, 1),
-  (2, 2), (3, 2),
-  (3, 3), (4, 3),
-  (4, 4), (5, 4),
-  (5, 5), (6, 5),
-  (6, 6), (7, 6),
-  (7, 7), (8, 7),
-  (8, 8), (9, 8),
-  (9, 9), (10, 9),
-  (10, 10), (11, 10),
-  (11, 11), (12, 11),
-  (12, 12), (13, 12),
-  (13, 13), (14, 13),
-  (14, 14), (15, 14),
-  (15, 15), (1, 15);  // Adding multiple authors to some papers
-`;
+            INSERT INTO author_paper (author_id, paper_id) VALUES
+            (1, 1), (2, 1),
+            (2, 2), (3, 2),
+            (3, 3), (4, 3),
+            (4, 4), (5, 4),
+            (5, 5), (6, 5),
+            (6, 6), (7, 6),
+            (7, 7), (8, 7),
+            (8, 8), (9, 8),
+            (9, 9), (10, 9),
+            (10, 10), (11, 10),
+            (11, 11), (12, 11),
+            (12, 12), (13, 12),
+            (13, 13), (14, 13),
+            (14, 14), (15, 14),
+            (15, 15), (1, 15); 
+          `;
 
           connection.query(insertAuthorPaper, (err) => {
             if (err) {
