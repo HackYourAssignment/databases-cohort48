@@ -43,20 +43,24 @@ connection.connect(err => {
     // Query 2: Print all columns of authors and their published paper titles
     const query2 = `
       SELECT 
-          a.author_id,
-          a.author_name,
-          a.university,
-          a.date_of_birth,
-          a.h_index,
-          a.gender,
-          a.mentor,
-          rp.paper_title
-      FROM 
-          authors a
-      LEFT JOIN 
-          research_Papers rp 
-      ON 
-          a.author_id = rp.author_id;
+    a.author_id,
+    a.author_name,
+    a.university,
+    a.date_of_birth,
+    a.h_index,
+    a.gender,
+    a.mentor,
+    rp.paper_title
+FROM 
+    authors a
+LEFT JOIN 
+    author_paper ap 
+ON 
+    a.author_id = ap.author_id
+LEFT JOIN 
+    research_Papers rp 
+ON 
+    ap.paper_id = rp.paper_id;
     `;
 
     connection.query(query2, (err, results) => {
