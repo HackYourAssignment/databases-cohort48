@@ -1,12 +1,11 @@
 const mysql = require('mysql2/promise');
-//exercise 3.4 --> create 5 queries by using aggregate functions in an async function   
-    
-// Create a connection to the MySQL server
+
+// Exercise 3.4 --> create 5 queries by using aggregate functions in an async function   
 const connectionConfig = {
   host: 'localhost',
   user: 'hyfuser',
   password: 'hyfpassword',
-  database: 'myLibrary'  // Use the existing database
+  database: 'myLibrary' // Use the existing database
 };
 
 // Queries to be executed
@@ -16,9 +15,11 @@ const queries = [
     sql: `
       SELECT 
           rp.paper_title,
-          COUNT(rp.author_id) AS num_authors
+          COUNT(ap.author_id) AS num_authors
       FROM 
           research_Papers rp
+      JOIN 
+          author_paper ap ON rp.paper_id = ap.paper_id
       GROUP BY 
           rp.paper_id;
     `
@@ -31,9 +32,9 @@ const queries = [
       FROM 
           research_Papers rp
       JOIN 
-          authors a 
-      ON 
-          rp.author_id = a.author_id
+          author_paper ap ON rp.paper_id = ap.paper_id
+      JOIN 
+          authors a ON ap.author_id = a.author_id
       WHERE 
           a.gender = 'Female';
     `
@@ -58,10 +59,10 @@ const queries = [
           COUNT(rp.paper_id) AS total_papers
       FROM 
           authors a
-      LEFT JOIN 
-          research_Papers rp 
-      ON 
-          a.author_id = rp.author_id
+      JOIN 
+          author_paper ap ON a.author_id = ap.author_id
+      JOIN 
+          research_Papers rp ON ap.paper_id = rp.paper_id
       GROUP BY 
           a.university;
     `
@@ -81,6 +82,7 @@ const queries = [
   }
 ];
 
+// Function to execute the queries
 const executeQueries = async (queries) => {
   const connection = await mysql.createConnection(connectionConfig);
 
