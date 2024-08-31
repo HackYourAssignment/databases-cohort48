@@ -1,9 +1,12 @@
 const { MongoClient } = require('mongodb');
 const fs = require('fs');
 const csv = require('csv-parser');
+require('dotenv').config();
 
 async function importCsvToMongoDB() {
-  const uri = "mongodb://localhost:27017";
+  //USE .ENV FILE
+ 
+  const uri = process.env.MONGO_URI;
   const client = new MongoClient(uri);
 
   try {
