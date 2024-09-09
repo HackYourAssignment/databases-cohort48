@@ -59,7 +59,7 @@ async function importCsvToMongoDB() {
 }
 
 async function getTotalPopulationByYear(country) {
-  const uri = "mongodb://localhost:27017";
+  const uri = process.env.MONGO_URI;
   const client = new MongoClient(uri);
 
   try {
@@ -93,7 +93,7 @@ async function getTotalPopulationByYear(country) {
 }
 
 async function getContinentPopulationByYearAndAge(year, age) {
-  const uri = "mongodb://localhost:27017";
+  const uri = process.env.MONGO_URI;
   const client = new MongoClient(uri);
 
   try {
