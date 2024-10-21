@@ -98,19 +98,12 @@ const insertMeetingRows = `
 `;
 
 // Create and insert queries
-connection.query(createInviteeTable, (err) => {
+connection.query(createInviteeTable, createRoomTable, (err) => {
     if (err) {
         console.error('Error creating Invitee table:', err);
         return;
     }
-    console.log('Invitee table created');
-    
-    connection.query(createRoomTable, (err) => {
-        if (err) {
-            console.error('Error creating Room table:', err);
-            return;
-        }
-        console.log('Room table created');
+    console.log('Invitee  and Room tables created');
         
         connection.query(createMeetingTable, (err) => {
             if (err) {
@@ -122,6 +115,7 @@ connection.query(createInviteeTable, (err) => {
             connection.query(insertInviteeRows, (err) => {
                 if (err) {
                     console.error('Error inserting rows into Invitee table:', err);
+                    closeConnection();
                     return;
                 }
                 console.log('Rows inserted into Invitee table');
@@ -129,6 +123,7 @@ connection.query(createInviteeTable, (err) => {
                 connection.query(insertRoomRows, (err) => {
                     if (err) {
                         console.error('Error inserting rows into Room table:', err);
+                        closeConnection();
                         return;
                     }
                     console.log('Rows inserted into Room table');
@@ -136,21 +131,25 @@ connection.query(createInviteeTable, (err) => {
                     connection.query(insertMeetingRows, (err) => {
                         if (err) {
                             console.error('Error inserting rows into Meeting table:', err);
+                            closeConnection();
                             return;
                         }
                         console.log('Rows inserted into Meeting table');
                         
-                        // Close the database connection
-                        connection.end((err) => {
-                            if (err) {
-                                console.error('Error closing the database connection:', err);
-                                return;
-                            }
-                            console.log('Database connection closed');
-                        });
                     });
                 });
             });
         });
     });
-});
+
+// Close the connection
+
+const closeConnection = () => {
+    connection.end((err) => {
+        if (err) {
+            console.error('Error closing the connection:', err);
+            return;
+        }
+        console.log('Connection closed');
+    });
+}
