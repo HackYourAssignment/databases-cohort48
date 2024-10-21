@@ -28,7 +28,7 @@ connection.query('SELECT name FROM country WHERE population > 8000000', (err, re
 });
 
 // query the names of the countries that have land in their name
-connection.query('SELECT name FROM country WHERE name LIKE "%land%"', (err, results) => {
+connection.query('SELECT name FROM country WHERE LOWER(name) LIKE "%land%"', (err, results) => {
     if (err) {
         console.error('Error querying the database:', err);
         return;
